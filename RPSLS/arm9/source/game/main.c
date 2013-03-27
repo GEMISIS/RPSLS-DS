@@ -114,40 +114,54 @@ int chooseWinner(int choice1, int choice2)
 }
 
 /*
- * Animates the results of the match.
+ * Runs the match and animates the results of the match.
  * @param choice1 The first player's choice.
  * @param choice2 The second player's choice.
+ * @return Returns the results of the match.
  */
-void animateActions(int choice1, int choice2)
+int runMatch(int choice1, int choice2)
 {
 	// Create the first player's sprite based on the choice.
 	createSprite(1, 0, 0, selectionSprites[choice1], selectionSpritesSizes[choice1], selectionSpritesPal[choice1], 64, 64);
 	// Create the second player's sprite based on the choice.
 	createSprite(1, 1, 1, selectionSprites[choice2], selectionSpritesSizes[choice2], selectionSpritesPal[choice2], 64, 64);
 
+	// The X positions of the sprites.
 	int x1 = -64;
 	int x2 = 256;
+	// The Y positions of the sprites.
+	// This is the same for both sprites, and thus
+	// only needs one value.
 	int y = 128 - 32;
+	// The rotation of the losing sprite.
 	int rotation = 0;
 
+	// The the sprites to the correct positions.
 	setSpriteXY(1, 0, x1, y);
 	setSpriteXY(1, 1, x2, y);
 
+	// Set the speed to be 4 pixels per movement.
 	int speed = 4;
 
+	// Move the sprites together until they touch.
 	while(x1 + 64 != x2)
 	{
+		// Update the positions.
 		x1 += speed;
 		x2 -= speed;
 
+		// Set the positions.
 		setSpriteXY(1, 0, x1, y);
 		setSpriteXY(1, 1, x2, y);
 
+		// Update the game's display.
 		updateAll();
 	}
 
+	// Get the winner of the match.
 	int winner = chooseWinner(choice1, choice2);
 
+	// If the winner is player 1, then player 2's sprite spirals off screen.
 	if(winner == 1)
 	{
 		while(x2 < 256 && y < 192)
@@ -166,6 +180,7 @@ void animateActions(int choice1, int choice2)
 			updateAll();
 		}
 	}
+	// If the winner is player 2, then player 1's sprite spirals off screen.
 	else if(winner == -1)
 	{
 		while(x1 > -64 && y < 192)
@@ -184,6 +199,7 @@ void animateActions(int choice1, int choice2)
 			updateAll();
 		}
 	}
+	// If the match is a tie, both sprite's spiral off screen.
 	else
 	{
 		while(x1 > -64 && x2 < 256 && y < 192)
@@ -206,31 +222,31 @@ void animateActions(int choice1, int choice2)
 		}
 	}
 
+	// Delete the player's sprites.
 	deleteSprite(1, 0);
 	deleteSprite(1, 1);
-}
-
-int decideMatch_basic(int choice)
-{
-	int cpuChoice = rand() % 5;
-
-	animateActions(choice, cpuChoice);
-
-	int winner = chooseWinner(choice, cpuChoice);
 
 	return winner;
 }
 
+/*
+ * Initializes the game's graphics.
+ * @param mode The mode of the game (Single player or multi player).
+ */
 void initializeMainGameGraphics(playerMode mode)
 {
+	// Delete the two screens backgrounds in case of game over.
 	deleteBg(0, 1);
 	deleteBg(1, 1);
 
+	// Set the backdrop color to be a dark shade of blue.
 	setBackdropColor(RGB15(1, 5, 9));
 	setBackdropColorSub(RGB15(1, 5, 9));
 
+	// Check if the mode is for a single player.
 	if(mode == SINGLE_NORMAL)
 	{
+		// Player 1's choices.
 		createSprite(0, 0, 0, rockTiles, rockTilesLen, rockPal, 64, 64);
 		setSpriteXY(0, 0, 32 + (64 * 0), 32 + (64 * 0));
 
@@ -248,10 +264,12 @@ void initializeMainGameGraphics(playerMode mode)
 
 		createSprite(1, 4, 4, healthbarTiles, healthbarTilesLen, healthbarPal, 64, 64);
 		setSpriteXY(1, 4, 0, 0);
+		// Player 2's choice don't need to be shown.
 	}
+	// Check if the mode is for multiple player.
 	else if(mode == MULTI_NORMAL)
 	{
-		// Player 1
+		// Player 1's choices.
 		createSprite(0, 0, 0, rockTiles, rockTilesLen, rockPal, 64, 64);
 		setSpriteXY(0, 0, 0, 64 * 0);
 
@@ -270,7 +288,7 @@ void initializeMainGameGraphics(playerMode mode)
 		createSprite(1, 4, 4, healthbarTiles, healthbarTilesLen, healthbarPal, 64, 64);
 		setSpriteXY(1, 4, 0, 0);
 
-		// Player 2
+		// Player 2's choices.
 		copySprite(0, 5, 5, 0, 0);
 		setSpriteXY(0, 5, 256 - 64, 64 * 0);
 
@@ -291,117 +309,161 @@ void initializeMainGameGraphics(playerMode mode)
 	}
 }
 
+/*
+ * Create's the game over screen.
+ */
 void gameOverScreen()
 {
 	int i = 0;
+	// Loop through and delete all of the bottom screen's sprites.
 	for(i = 0;i < 5;i += 1)
 	{
 		deleteSprite(0, i);
 	}
+	// Delete the health bar sprite.
 	deleteSprite(1, 4);
 
-	deleteBg(1, 1);
-	createBg(1, 1, 256, 192);
-	loadBg(1, 1, gameover_topTiles, gameover_topTilesLen,
-		gameover_topMap, gameover_topMapLen, gameover_topPal);
-
+	// Delete the default backgrounds.
 	deleteBg(0, 1);
+	deleteBg(1, 1);
+
+	// Create the game over backgrounds.
 	createBg(0, 1, 256, 192);
+	createBg(1, 1, 256, 192);
+
+	// Load the game over backgrounds' data.
 	loadBg(0, 1, gameover_bottomTiles, gameover_bottomTilesLen,
 		gameover_bottomMap, gameover_bottomMapLen, gameover_bottomPal);
+	loadBg(1, 1, gameover_topTiles, gameover_topTilesLen,
+		gameover_topMap, gameover_topMapLen, gameover_topPal);
 }
 
 int main()
 {
+	// Initialize exception handling for debugging purposes.
 	defaultExceptionHandler();
+
+	// Initialize video (IE: Video Ram).
 	initVideo();
+
+	// Initialize the text system.
+	initTextSystem(true, 3, 3);
+
+	// Enable sound.
 	soundEnable();
+
+	// Seed the random method.
 	srand(time(NULL));
 
-	initTextSystem(true, 3, 3);
-	//setFont(0, 32, 95, fontTiles, fontPal);
-	//setFont(1, 32, 95, fontTiles, fontPal);
-
+	// Initialize the game's graphics for single player.
 	initializeMainGameGraphics(SINGLE_NORMAL);
 
-	int damage = 0;
-	int wins = 0;
-	int ties = 0;
+	// Set the damage, wins, and ties to 0.
+	int damage = 0, wins = 0, ties = 0;
 
+	// Create a touch position variable for the touch screen.
 	touchPosition touch;
 
+	// Clear the console of any possible old text.
 	consoleClear();
+
+	// Draw the text for the top screen.
 	drawText(1, 16, 2, "Wins: %d", wins);
 	drawText(1, 16, 4, "Ties: %d", ties);
 	drawText(1, 8, 8, "You			Computer");
 
 	while(1)
 	{
+		// Read the keys being pressed and touch screen data.
 		scanKeys();
 		touchRead(&touch);
 
+		// Get the player's button choice.
 		int choice = buttonTouched(touch.px, touch.py);
+
+		// If the choie is not negative (IE: The player pressed a button), then run a match.
 		if(choice > -1)
 		{
-			choice = decideMatch_basic(choice);
+			// Run the match with a random number (IE: A "CPU") and store the results
+			// in the choice variable.
+			choice = runMatch(choice, rand() % 5);
+
+			// Check the value of hte choice.
 			switch(choice)
 			{
 			case -1:
+				// Result of -1 does damage.
 				damage += 1;
 				break;
-			case 0:
+			default:
+				// Anything else is a tie.
 				ties += 1;
 				break;
 			case 1:
+				// Result of 1 is a win.
 				wins += 1;
 				break;
 			}
+
+			// Wait until the player is not holding down on the touch screen.
 			while(keysHeld() & KEY_TOUCH)
 			{
 				scanKeys();
 			}
+
+			// Check that the player has not died yet.
 			if(damage > -1 && damage < 4)
 			{
+				// If so, then set the health bar's frame.
 				setSpriteFrame(1, 4, damage);
 			}
 
+			// Clear the console's old text.
 			consoleClear();
+
+			// Display the current results after the match.
 			drawText(1, 16, 2, "Wins: %d", wins);
 			drawText(1, 16, 4, "Ties: %d", ties);
 			drawText(1, 8, 8, "You			Computer");
 		}
 
+		// Check if the player has recieved too much damage.
 		if(damage > 3)
 		{
+			// If so, clear the console and display the game over screen.
 			consoleClear();
 			gameOverScreen();
 
-			damage = -1;
-
+			// While the touchscreen is not being touched, wait
+			// and update the graphics.
 			while(!(keysHeld() & KEY_TOUCH))
 			{
 				scanKeys();
 				updateAll();
 			}
+			// Once it has been touched, wait until it no longer is.
 			while(keysHeld() & KEY_TOUCH)
 			{
 				scanKeys();
 			}
 
+			// Then, initialize the graphics for single player again.
 			initializeMainGameGraphics(SINGLE_NORMAL);
-			damage = 0;
-			wins = 0;
-			ties = 0;
+			// Reset the damage, wins', and ties' variables.
+			damage = wins = ties = 0;
 
+			// Set the heatlhbar frame to the initial frame.
 			setSpriteFrame(1, 4, damage);
 
-			consoleClear();
+			// Reset the text.
 			drawText(1, 16, 2, "Wins: %d", wins);
 			drawText(1, 16, 4, "Ties: %d", ties);
 			drawText(1, 8, 8, "You			Computer");
 		}
 
+		// Update all of the game.
 		updateAll();
 	}
+	// Return 0 when done.
 	return 0;
 }
