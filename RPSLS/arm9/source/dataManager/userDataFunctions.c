@@ -92,7 +92,7 @@ void createUserData(const char* user)
 	/*
 	 * Finally, the game time is updated for the user's birthday.
 	 */
-	updateGameTime();
+	updateTime();
 }
 
 /*
@@ -356,6 +356,7 @@ void updateUserData()
 
 /*
  * Tells whether it is the current user's birthday or not.
+ * @return Returns true if it is the user's birthday, false otherwise.
  */
 bool isUserBirthday()
 {

@@ -1,7 +1,8 @@
 /*
- * A set of functions used to manage user data.  Contains
- * everything from the current user that is on, to their friends list
- * to their events and achievements.
+ * A set of functions made to handle user data.  Certain
+ * info comes from the Nintendo DS/DSi itself, but parts
+ * of it are custom things added to add support for more
+ * features.
  * Created by: Gerald McAlister
  */
 
@@ -68,6 +69,7 @@ extern void updateUserData();
 
 /*
  * Tells whether it is the current user's birthday or not.
+ * @return Returns true if it is the user's birthday, false otherwise.
  */
 extern bool isUserBirthday();
 

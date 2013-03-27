@@ -57,6 +57,7 @@ typedef struct achievement_t
  * the achievement is worth.
  * @param gameID The identification for the game.  Should be
  * 8 characters long.
+ * @param achievementTitle The title of the achievement.
  */
 extern void addAchievement(int pointValue, const char* gameID,
 		const char* achievementTitle);

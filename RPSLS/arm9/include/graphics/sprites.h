@@ -27,11 +27,12 @@ extern "C"
 #define MAX_PALETTES 16
 
 /*
- * Creates a sprite on the screen.
+ * Creates a sprite on the chosen screen.
  * @param screen The screen to create the sprite on.
  * @param index The index of the sprite.
  * @param palSlot The slot for the palette data.
  * @param gfxData The graphical data.
+ * @param gfxDataSize The size of the graphical data.
  * @param palData The palette data.
  * @param width The width of the sprite.
  * @param height The height of the sprite.
@@ -107,18 +108,21 @@ extern void setCollisionBox(int screen, int index, rectangle_t rect);
  * Gets the desired sprite's angle of rotation.
  * @param screen The screen the sprite is on.
  * @param index The index of the sprite.
+ * @return Returns the sprite's angle of rotation.
  */
 extern int getAngle(int screen, int index);
 /*
  * Gets the desired sprite's horizontal flip value.
  * @param screen The screen the sprite is on.
  * @param index The index of the sprite.
+ * @return Returns true if flipped horizontally, false otherwise.
  */
 extern bool getHFlip(int screen, int index);
 /*
  * Gets the desired sprite's vertical flip value.
  * @param screen The screen the sprite is on.
  * @param index The index of the sprite.
+ * @return Returns true if flipped vertically, false otherwise.
  */
 extern bool getVFlip(int screen, int index);
 
@@ -211,6 +215,8 @@ extern void setSpriteUseGrayscale(int screen, int index, bool use);
  * @param index The index of the sprite.
  * @param x The x position to check.
  * @param y The y position to check.
+ * @return Returns true if the sprite is touching the point, 
+ * false otherwise.
  */
 extern bool isSpriteTouchingPoint(int screen, int index, int x, int y);
 /*
@@ -220,46 +226,11 @@ extern bool isSpriteTouchingPoint(int screen, int index, int x, int y);
  * @param x The circle's x centerposition.
  * @param y The circle's y center position.
  * @param radius The radius of the circle.
+ * @return Returns true the sprite is touching the circle,
+ * false otherwise.
  */
 extern bool isSpriteTouchingCircle(int screen, int index, int x, int y,
 		int radius);
-
-/*
- * Checks if the sprite if within another sprite with pixel collisions.
- * @param screen The screen the sprite is on.
- * @param index1 The index of the first sprite.
- * @param index2 The index of the second sprite.
- * @return Returns true of touching, false otherwise.
- */
-extern bool isSpriteTouchingSpritePerfect(int screen, int index1, int index2);
-
-/*
- * Checks if the sprite if within another sprite with pixel collisions
- and returns the point of collision.
- * @param screen The screen the sprite is on.
- * @param index1 The index of the first sprite.
- * @param index2 The index of the second sprite.
- * @return Returns the point of intersection (-1, -1 if no point)
- */
-extern coordinates_t getSpriteTouchingSpritePerfect(int screen, int index1, int index2);
-
-/*
- * Checks if the sprite if within a circle.
- * @param screen The screen the sprite is on.
- * @param index1 The index of the first sprite.
- * @param index2 The index of the second sprite.
- * @return Returns true of touching, false otherwise.
- */
-extern bool isSpriteTouchingSprite(int screen, int index1, int index2);
-
-/*
- * Checks if the sprite if within another sprite at a basic level.
- * @param screen The screen the sprite is on.
- * @param index1 The index of the first sprite.
- * @param index2 The index of the second sprite.
- * @return Returns true of touching, false otherwise.
- */
-extern enum sides_t isSpriteTouchingSpriteSide(int screen, int index1, int index2);
 
 /*
  * Gets the pixel color at the desired position on the sprite.
@@ -267,8 +238,16 @@ extern enum sides_t isSpriteTouchingSpriteSide(int screen, int index1, int index
  * @param index The index of the sprite.
  * @param x The x position to use.
  * @param y The y position to use.
+ * @return Returns the color structure with the pixel's color.
  */
 extern color_t getSpritePixel(int screen, int index, int x, int y);
+
+/*
+ * Draws the desired sprite at the chosen index on the desired screen.
+ * @param screen The screen the sprite is on.
+ * @param index The index of the sprite.
+ */
+void drawSprite(int screen, int index);
 
 /*
  * Updates all of the sprites.

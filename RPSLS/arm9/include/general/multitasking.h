@@ -1,6 +1,6 @@
 /*
- * A multitasking class.  Used with the power button to bring up a standard
- * set of options in a menu.
+ * This is a DSi only file.  It contains functions for dealing with multitasking which is
+ * done with the fifo by checking if the power button has been pressed.
  * Created by: Gerald McAlister
  */
 
@@ -26,6 +26,7 @@ extern u32 batteryLevel;
 
 /*
  * Used to initialize the background menu.  DSi only.
+ * @param canUseText Whether the background menu can display text.
  */
 extern void initBackgroundMenu(bool canUseText);
 

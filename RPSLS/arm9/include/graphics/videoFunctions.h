@@ -1,5 +1,6 @@
 /*
- * A set of functions used for video management.  IE: Vram, screen flipping, etc.
+ * Contains a set of functions for using the 2D video system.
+ * Support for the 3D system is not supported (But may be later).
  * Created by: Gerald McAlister
  */
 
@@ -19,7 +20,7 @@ extern "C" {
 extern bool screensFlipped;
 
 /*
- *  Initializes the video for the nintendo DS.
+ *  Initializes the video for the Nintendo DS.
  *  Sets up the screens to use backgrounds and sprites with the
  *  2D engine.
  */

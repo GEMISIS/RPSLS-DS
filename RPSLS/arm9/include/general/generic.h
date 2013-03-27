@@ -1,6 +1,6 @@
 /*
- * Contains a set of generic types, mainly for math related
- * stuff (IE: Coordinates, shapes, etc.)
+ * This file contains some generic functions for handling certain things such
+ * as checking a point within a specified area.
  * Created by: Gerald McAlister
  */
 
@@ -135,14 +135,6 @@ extern bool withinRectangle(int x, int y, rectangle_t boundingRectangle);
  * @return Returns true if there was a collision, false otherwise.
  */
 extern bool rectangleCollision(rectangle_t rect1, rectangle_t rect2);
-
-/*
- * Checks to see if there is a collision between two rectangles.
- * @param rect1 The first rectangle to use.
- * @param rect2 The second rectangle to use.
- * @return Returns true if there was a collision, false otherwise.
- */
-extern enum sides_t rectangleCollisionSide(rectangle_t rect1, rectangle_t rect2, bool topBottom, bool leftRight);
 
 /*
  *  Updates everything that is in need of updating.

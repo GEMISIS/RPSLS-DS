@@ -12,7 +12,7 @@
 bool screensFlipped = false;
 
 /*
-*  Initializes the video for the nintendo DS.
+*  Initializes the video for the Nintendo DS.
 *  Sets up the screens to use backgrounds and sprites with the
 *  2D engine.
 */

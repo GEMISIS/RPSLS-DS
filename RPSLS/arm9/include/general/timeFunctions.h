@@ -1,6 +1,6 @@
 /*
- * Contains a set of functions and structures for
- * managing the time on the Nintendo DS/DSi.
+ * A set of functions for dealing with the Nintendo DS/DSi's
+ * real time clock (RTC).
  * Created by: Gerald McAlister
  */
 
@@ -51,56 +51,58 @@ typedef struct event_t
 extern struct tm* DSTime;
 
 /*
- *  Gets the current amount of seconds gone by according to the DS.
- *  @return The current amount of seconds gone by.
+ * Gets the current secconds past according to the DS.
+ * @return Returns the seconds as an integer.
  */
 extern int getTimeSeconds();
 
 /*
- *  Gets the current amount of minutes gone by according to the DS.
- *  @return The current amount of minutes gone by
+ * Gets the current minutes passed the hour according to the DS.
+ * @return Returns the minutes as an integer.
  */
 extern int getTimeMinutes();
 
 /*
- *  Gets the current amount of hours gone by according to the DS.
- *  @return The current amount of hours gone by
+ * Gets the current hours according to the DS.
+ * @param military Whether to get the hours in military time or not (IE: 24 hour vs 12 hour).
+ * @return Returns the current hour as an integer in military time if military is true (1-24) or
+ * in 12 hour format (1-12) if military is false.
  */
 extern int getTimeHours(bool military);
 
 /*
- *  Gets the current day of the year according to the DS.
- *  @return The current day of the year.
+ * Gets the current day of the year according to the DS.
+ * @return Returns the day of the year (1-365) as an integer.
  */
 extern int getTimeDayOfYear();
 
 /*
- *  Gets the current day of the week according to the DS.
- *  @return The current day of the week.
+ * Gets the current day of the week according to the DS.
+ * @return Returns the day of the week (1-7) as an integer.
  */
 extern int getTimeDayOfWeek();
 
 /*
- *  Gets the current day of the month according to the DS.
- *  @return The current day of the month.
+ * Gets the current day of the month according to the DS.
+ * @return Returns the day of the month (1-31) as an integer.
  */
 extern int getTimeDayOfMonth();
 
 /*
- *  Gets the current month according to the DS.
- *  @return The current month.
+ * Gets the current month according to the DS.
+ * @return Returns the month as an integer.
  */
 extern int getTimeMonth();
 
 /*
- *  Gets the current year according to the DS.
- *  @return The current year.
+ * Gets the current year according to the DS.
+ * @return Returns the year as an integer.
  */
 extern int getTimeYear();
 
 /*
- *  Gets the current time according to the DS as text.
- *  @return A character array containing the time.
+ * Gets the current time according to the DS as text.
+ * @return Returns the time as a character array of ascii text.
  */
 extern char* getTimeText();
 
@@ -108,11 +110,6 @@ extern char* getTimeText();
  *  Updates the current time according to the DS.
  */
 extern void updateTime();
-
-/*
- *  Updates the graphics based on the current time of day.
- */
-extern void updateGameTime();
 
 #ifdef __cplusplus
 }

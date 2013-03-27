@@ -1,9 +1,12 @@
 /*
- * This file contains functions for creating and reading achievements for various
- * games.  These achievements each contain an amount of points that can be used
- * for various in game things.
+ * This file contains functions used to create and read achievements.  These
+ * achievements can be used as rewards for players in games, and then
+ * can be read by the an application that makes use of this.
+ * Each Achievement contains a point value, which can be used for
+ * various DLC (Downloadable Content) in other games, or whatever else.
  * Created by: Gerald McAlister
  */
+
 #include "GEM_functions.h"
 
 /*
@@ -12,6 +15,7 @@
  * the achievement is worth.
  * @param gameID The identification for the game.  Should be
  * 8 characters long.
+ * @param achievementTitle The title of the achievement.
  */
 void addAchievement(int pointValue, const char* gameID,
 		const char* achievementTitle)

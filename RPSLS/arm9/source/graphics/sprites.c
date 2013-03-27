@@ -1,6 +1,6 @@
 /*
- * Contains a set of functions for managing sprites.  The sprites are updated on their own in the
- * updateSprites() function.
+ * A sprite manager file.  Using this, a developer can create sprites!  There can
+ * be a max of 128 per screen and 16 palettes total!
  * Created by: Gerald McAlister
  */
 #include "sprites.h"
@@ -140,6 +140,10 @@ sprite_t spriteList[2][MAX_SPRITES];
 /*
  * Loads the sprite with on desired screen
  * and given index's data.
+ * @param screen The screen to load the sprite data on.
+ * @param index The index of the sprite to load the data into.
+ * @param gfx True to load the graphics data.
+ * @param pal True to load the palette data.
  */
 void loadData(int screen, int index, bool gfx, bool pal)
 {
@@ -274,11 +278,12 @@ void loadData(int screen, int index, bool gfx, bool pal)
 }
 
 /*
- * Creates a sprite on the screen.
+ * Creates a sprite on the chosen screen.
  * @param screen The screen to create the sprite on.
  * @param index The index of the sprite.
  * @param palSlot The slot for the palette data.
  * @param gfxData The graphical data.
+ * @param gfxDataSize The size of the graphical data.
  * @param palData The palette data.
  * @param width The width of the sprite.
  * @param height The height of the sprite.
@@ -357,6 +362,9 @@ void createSprite(int screen, int index, int palSlot, const unsigned int* gfxDat
 	spriteList[screen][index].bRect.position.y = 0;
 
 	int i = 0;
+
+	// Loop through the sprites widths, finding the correct max size for a sprite.
+	// This is due to the fact that the sprite must have a width of 8, 16, 32, 64, or 128.
 	for(i = 8;i < 128;i *= 2)
 	{
 		if(i >= width)
@@ -365,6 +373,8 @@ void createSprite(int screen, int index, int palSlot, const unsigned int* gfxDat
 			break;
 		}
 	}
+	// Loop through the sprites heights, finding the correct max size for a sprite.
+	// This is due to the fact that the sprite must have a height of 8, 16, 32, 64, or 128.
 	for(i = 8;i < 128;i *= 2)
 	{
 		if(i >= height)
@@ -394,7 +404,6 @@ void createSprite(int screen, int index, int palSlot, const unsigned int* gfxDat
 		spriteList[screen][index].gfxData = NULL;
 	}
 	spriteList[screen][index].gfxData = (u16*)calloc(gfxDataSize, sizeof(u16));
-
 	memcpy(spriteList[screen][index].gfxData, gfxData, gfxDataSize);
 
 	/*
@@ -406,7 +415,6 @@ void createSprite(int screen, int index, int palSlot, const unsigned int* gfxDat
 		spriteList[screen][index].paletteData = NULL;
 	}
 	spriteList[screen][index].paletteData = (u16*)calloc(512, sizeof(u16));
-
 	memcpy(spriteList[screen][index].paletteData, palData, 512);
 
 	/*
@@ -543,6 +551,7 @@ void copySprite(int screen, int index, int palSlot, int screen2, int index2)
 	 */
 	spriteList[screen][index].bRect.position.y = 0;
 
+	// Set the sprite's sizes to be the same too.
 	spriteList[screen][index].bRect.size.width = spriteList[screen2][index2].bRect.size.width;
 	spriteList[screen][index].bRect.size.height = spriteList[screen2][index2].bRect.size.height;
 
@@ -559,6 +568,8 @@ void copySprite(int screen, int index, int palSlot, int screen2, int index2)
 
 	/*
 	 * Sets the sprite's graphics memory.
+	 * No need to copy the memory since they are duplicates and can
+	 * share the pointer to the memory.
 	 */
 	if(spriteList[screen][index].gfxData != NULL)
 	{
@@ -569,6 +580,8 @@ void copySprite(int screen, int index, int palSlot, int screen2, int index2)
 
 	/*
 	 * Sets the sprite's palette memory.
+	 * No need to copy the memory since they are duplicates and can
+	 * share the pointer to the memory.
 	 */
 	if(spriteList[screen][index].paletteData != NULL)
 	{
@@ -693,6 +706,7 @@ void deleteSprite(int screen, int index)
  * Gets the desired sprite's bounding box.
  * @param screen The screen the sprite is on.
  * @param index The index of the sprite.
+ * @return Returns the sprite's bounding box.
  */
 rectangle_t getBoundingBox(int screen, int index)
 {
@@ -947,6 +961,7 @@ void setCollisionBox(int screen, int index, rectangle_t rect)
  * Gets the desired sprite's angle of rotation.
  * @param screen The screen the sprite is on.
  * @param index The index of the sprite.
+ * @return Returns the sprite's angle of rotation.
  */
 int getAngle(int screen, int index)
 {
@@ -998,6 +1013,7 @@ int getAngle(int screen, int index)
  * Gets the desired sprite's horizontal flip value.
  * @param screen The screen the sprite is on.
  * @param index The index of the sprite.
+ * @return Returns true if flipped horizontally, false otherwise.
  */
 bool getHFlip(int screen, int index)
 {
@@ -1049,6 +1065,7 @@ bool getHFlip(int screen, int index)
  * Gets the desired sprite's vertical flip value.
  * @param screen The screen the sprite is on.
  * @param index The index of the sprite.
+ * @return Returns true if flipped vertically, false otherwise.
  */
 bool getVFlip(int screen, int index)
 {
@@ -1576,7 +1593,7 @@ void setSpriteVisible(int screen, int index, bool visible)
  * @param screen The screen the sprite is on.
  * @param index The index of the sprite.
  * @return Returns true if the sprite is using
- * grayscale.  False otherwise.
+ * grayscale, false otherwise.
  */
 bool getSpriteUseGrayscale(int screen, int index)
 {
@@ -1624,6 +1641,8 @@ void setSpriteUseGrayscale(int screen, int index, bool use)
  * @param index The index of the sprite.
  * @param x The x position to check.
  * @param y The y position to check.
+ * @return Returns true if the sprite is touching the point, 
+ * false otherwise.
  */
 bool isSpriteTouchingPoint(int screen, int index, int x, int y)
 {
@@ -1685,6 +1704,8 @@ bool isSpriteTouchingPoint(int screen, int index, int x, int y)
  * @param x The circle's x centerposition.
  * @param y The circle's y center position.
  * @param radius The radius of the circle.
+ * @return Returns true the sprite is touching the circle,
+ * false otherwise.
  */
 bool isSpriteTouchingCircle(int screen, int index, int x, int y, int radius)
 {
@@ -1762,6 +1783,7 @@ bool isSpriteTouchingCircle(int screen, int index, int x, int y, int radius)
  * @param index The index of the sprite.
  * @param x The x position to use.
  * @param y The y position to use.
+ * @return Returns the color structure with the pixel's color.
  */
 color_t getSpritePixel(int screen, int index, int x, int y)
 {

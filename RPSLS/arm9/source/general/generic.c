@@ -71,7 +71,7 @@ void updateAll()
 	/*
 	 * Updates the game time.
 	 */
-	updateGameTime();
+	updateTime();
 
 	/*
 	 * Updates the user's data.

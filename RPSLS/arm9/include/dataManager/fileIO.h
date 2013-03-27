@@ -25,14 +25,15 @@ typedef struct
 /*
  * Loads a file into the desired buffer and returns the size of it.
  * @param fileName The name of the file to load.
- * @param buffer The buffer to store the file in.
+ * @param fileBuffer The buffer to store the file in.
+ * @param offset The offset to start reading the file at.
  * @return Returns the size of the file.
  */
 extern u32 openFileBuffer(char* fileName, fileBuffer_t* fileBuffer, int offset);
 
 /*
  * Unloads a buffer from memory.
- * @param buffer The buffer to close.
+ * @param fileBuffer The buffer to close.
  */
 void closeBuffer(fileBuffer_t* fileBuffer);
 

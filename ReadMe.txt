@@ -19,7 +19,7 @@ this code.
 Please note that this requires the devkitArm and libnds library
 that is included in devkitPro to compile.
 
-Copyright (C) 2013  GEMISIS
+Copyright (C) 2013  Gerald McAlister
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

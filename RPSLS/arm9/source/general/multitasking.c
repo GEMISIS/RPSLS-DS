@@ -56,6 +56,7 @@ static void multiTaskFifoFunction(u32 value, void* userData)
 
 /*
  * Used to initialize the background menu.  DSi only.
+ * @param canUseText Whether the background menu can display text.
  */
 void initBackgroundMenu(bool canUseText)
 {

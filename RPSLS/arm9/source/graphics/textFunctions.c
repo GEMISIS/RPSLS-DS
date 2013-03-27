@@ -1,6 +1,6 @@
 /*
- * A set of functions for dealing with the text engine.  Uses
- * the tiled bg system.
+ * Contains a set of functions for drawing text.  Nice because it allows for easy
+ * positioning, as well as different fonts.
  * Created by: Gerald McAlister
  */
 #include "textFunctions.h"
@@ -15,7 +15,9 @@ PrintConsole topScreen;
  */
 PrintConsole bottomScreen;
 
+// The ID of the top screen's text console.
 int topId = 0;
+// The ID of the bottom screen's text console.
 int bottomId = 0;
 
 /*

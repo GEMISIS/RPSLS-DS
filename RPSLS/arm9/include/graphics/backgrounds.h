@@ -39,10 +39,10 @@ typedef unsigned short* paletteData_t;
  * Creates a background and returns an integer that points to it.
  * @param screen The screen to create the background on.
  * @param index The index (layer) to create the background on.
- * @param mapBase The map base to use for the background.  (Usually the same as the index)
- * @param tileBase The tile base to use for the background. (Usually the index + 1)
+ * @param width The width of the background.
+ * @param height The height of the background.
  * @return An integer that points to the background.
- */
+*/
 extern int createBg(int screen, int index, u32 width, u32 height);
 
 /*
@@ -53,7 +53,7 @@ extern int createBg(int screen, int index, u32 width, u32 height);
 extern void deleteBg(int screen, int index);
 
 /*
- * Adds a set of tiles to a tile base.
+ * Sets the for the background to use.
  * @param screen The screen to create the background on.
  * @param index The index (layer) to create the background on.
  * @param tiles A pointer to the tiles' data.
@@ -62,12 +62,11 @@ extern void deleteBg(int screen, int index);
 extern void setBgTiles(int screen, int index, const unsigned int* tiles, u32 tileSize);
 
 /*
- * Sets the desired background's map.
+ * Sets the desired background's map.  This data draws the tiles at chosen positions.
  * @param screen The screen to create the background on.
  * @param index The index (layer) to create the background on.
  * @param map A pointer to the map's data.
- * @param width The width of the background.
- * @param height The height of the background.
+ * @param mapSize The size of the map's data.
  */
 extern void setBgMap(int screen, int index, const unsigned short* map, u32 mapSize);
 
@@ -101,7 +100,7 @@ extern void setBgPalette(int screen, int index, const unsigned short* pal);
  * Sets the desired backgrounds palette.
  * @param screen The screen that the background is on.
  * @param index The index (layer) of the background.
- * @param spot The color's index in the palette.
+ * @param colorIndex The color index to change.
  * @param color The color to switch to.
  */
 extern void setBgPaletteColor(int screen, int index, int colorIndex, color_t color);
@@ -109,8 +108,8 @@ extern void setBgPaletteColor(int screen, int index, int colorIndex, color_t col
 /*
  * Sets the desired background's parallax value with the
  * desired value.
- * @param screen The screen to create the background on.
- * @param index The index (layer) to create the background on.
+ * @param screen The screen to set the parallax speeds on.
+ * @param index The index (layer) to set the parallax speeds on.
  * @param x The x speed to set the background's parallax value to.
  * @param y The y speed to set the background's parallax value to.
  */
@@ -120,6 +119,7 @@ extern void setBgParallaxSpeeds(int screen, int index, int x, int y);
  * Get's the desired background's X parallax value.
  * @param screen The screen to get the parallax value from.
  * @param index The index (layer) to get the parallax value from.
+ * @return Returns the parallax X speed.
  */
 extern int getBgParallaxSpeedsX(int screen, int index);
 
@@ -127,6 +127,7 @@ extern int getBgParallaxSpeedsX(int screen, int index);
  * Get's the desired background's Y parallax value.
  * @param screen The screen to get the parallax value from.
  * @param index The index (layer) to get the parallax value from.
+ * @return Returns the parallax Y speed.
  */
 extern int getBgParallaxSpeedsY(int screen, int index);
 
@@ -134,6 +135,7 @@ extern int getBgParallaxSpeedsY(int screen, int index);
  * Get's the desired background's size.
  * @param screen The screen to get the size from.
  * @param index The index (layer) to get the size from.
+ * @return Returns the background's boundary size.
  */
 extern boundarySize_t getBgSize(int screen, int index);
 
@@ -145,8 +147,8 @@ extern void updateBackgrounds();
 /*
  * Sets the desired background's collision map data.  This data
  * is used for collision detection.
- * @param screen The screen to create the background on.
- * @param index The index (layer) to create the background on.
+ * @param screen The screen to create the collision background on.
+ * @param index The index (layer) to create the collision background on.
  * @param colMap A pointer to the collision map's map data.
  * @param colMapLen The size of the collision map's map data.
  * @param colTiles A pointer to the collision map's tile data.
@@ -157,8 +159,8 @@ extern void setBgCollisionMap(int screen, int index, u32 width, u32 height, cons
 
 /*
  * Deletes the collision map data for the desired background.
- * @param screen The screen to create the background on.
- * @param index The index (layer) to create the background on.
+ * @param screen The screen to delete the background collision map on.
+ * @param index The index (layer) to delete the background collision map on.
 */
 extern void deleteBgCollisionMap(int screen, int index);
 
@@ -168,6 +170,7 @@ extern void deleteBgCollisionMap(int screen, int index);
  * @param index The index (layer) to use.
  * @param x The X position to use.
  * @param y The Y position to use.
+ * @return Returns the index of the tile, otherwise it returns 0.
 */
 unsigned int getTileIndex(int screen, int index, int x, int y);
 
@@ -177,6 +180,8 @@ unsigned int getTileIndex(int screen, int index, int x, int y);
  * @param index The index (layer) to use.
  * @param x The X position to use.
  * @param y The Y position to use.
+ * @return Returns the index of the palette at the position x,y, otherwise
+ * it returns 0.
 */
 unsigned int getPalIndex(int screen, int index, int x, int y);
 
@@ -186,6 +191,8 @@ unsigned int getPalIndex(int screen, int index, int x, int y);
  * @param index The index (layer) to use.
  * @param x The X position to use.
  * @param y The Y position to use.
+ * @return Returns the pixel color at the position (x, y) if there is one, otherwise
+ * it returns 0.
 */
 unsigned int getPixelColor(int screen, int index, int x, int y);
 
