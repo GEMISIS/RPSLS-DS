@@ -36,7 +36,7 @@ u32 openFile(char* fileName, fileBuffer_t* fileBuffer, int offset)
 
 	// Seek the end of the file.
 	fseek(f, 0, SEEK_END);
-	// Set the size to be the position of the end (which is the size f the file).
+	// Set the size to be the position of the end (which is the size of the file).
 	fileBuffer->size = ftell(f) - fileBuffer->offset;
 	// Rewind the file to the beginnning.
 	rewind(f);

@@ -10,14 +10,29 @@ that I have not worked on consistently, but will one day result
 in a full library for Developing on the Nintendo DS.  This project
 was meant to test the capabilities of the library at the time.
 
-There is a lot of code that is not commented, as this was meant
-to be more of an unreleased test for the code, but I have decided
-to open source this so others may see what I have done.  There
+I have gone through and commented as much of the code as I can, and
+plan to comment more of it potentially as time goes on.  There
 are potentially many bugs with how certain things are done within
 this code.
 
 Please note that this requires the devkitArm and libnds library
 that is included in devkitPro to compile.
+
+Controls for multiplayer:
+
+Player 1:
+Up for lizard
+Down for scissors
+Right for spock
+Left for paper
+L for rock
+
+Player 2:
+X for lizard
+B for scissors
+Y for spock
+A for paper
+R for rock
 
 Copyright (C) 2013  Gerald McAlister
 

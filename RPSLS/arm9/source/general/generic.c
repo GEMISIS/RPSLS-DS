@@ -75,11 +75,13 @@ void updateAll()
 
 	/*
 	 * Updates the user's data.
+	 * Commented out due to issues with iDeaS emulator.
 	 */
-	updateUserData();
+	//updateUserData();
 
 	/*
 	 * Updates the background menu.
+	 * Commented out due to emulator issues.
 	 */
 	//updateBackgroundMenu();
 

@@ -365,7 +365,7 @@ void createSprite(int screen, int index, int palSlot, const unsigned int* gfxDat
 
 	// Loop through the sprites widths, finding the correct max size for a sprite.
 	// This is due to the fact that the sprite must have a width of 8, 16, 32, 64, or 128.
-	for(i = 8;i < 128;i *= 2)
+	for(i = 8;i <= 128;i *= 2)
 	{
 		if(i >= width)
 		{
@@ -375,7 +375,7 @@ void createSprite(int screen, int index, int palSlot, const unsigned int* gfxDat
 	}
 	// Loop through the sprites heights, finding the correct max size for a sprite.
 	// This is due to the fact that the sprite must have a height of 8, 16, 32, 64, or 128.
-	for(i = 8;i < 128;i *= 2)
+	for(i = 8;i <= 128;i *= 2)
 	{
 		if(i >= height)
 		{
