@@ -291,6 +291,13 @@ int runMatch(int choice1, int choice2)
  */
 void initializeMainGameGraphics(playerMode mode)
 {
+	int i = 0;
+	// Fade out to black.
+	for(i = 0;i > -16;i -= 2)
+	{
+		setBrightness(3, i);
+		swiWaitForVBlank();
+	}
 	// Delete the two screens backgrounds in case of game over.
 	deleteBg(0, 1);
 	deleteBg(1, 1);
@@ -368,24 +375,30 @@ void initializeMainGameGraphics(playerMode mode)
 		setSpriteFrame(1, 4, 0);
 
 		// Player 2's choices.
-		createSprite(0, 5, 0, rockTiles, rockTilesLen, rockPal, 64, 64);
+		copySprite(0, 5, 0, 0, 0);
 		setSpriteXY(0, 5, 256 - 64, 64 * 0);
 
-		createSprite(0, 6, 1, paperTiles, paperTilesLen, paperPal, 64, 64);
+		copySprite(0, 6, 1, 0, 1);
 		setSpriteXY(0, 6, 256 - 64, 64 * 1);
 
-		createSprite(0, 7, 2, scissorsTiles, scissorsTilesLen, scissorsPal, 64, 64);
+		copySprite(0, 7, 2, 0, 2);
 		setSpriteXY(0, 7, 256 - 64, 64 * 2);
 
-		createSprite(0, 8, 3, lizardTiles, lizardTilesLen, lizardPal, 64, 64);
+		copySprite(0, 8, 3, 0, 3);
 		setSpriteXY(0, 8, 256 - 128, 64 * 0 + 32);
 
-		createSprite(0, 9, 4, spockTiles, spockTilesLen, spockPal, 64, 64);
+		copySprite(0, 9, 4, 0, 4);
 		setSpriteXY(0, 9, 256 - 128, 64 * 1 + 32);
 
 		createSprite(1, 5, 5, healthbarTiles, healthbarTilesLen, healthbarPal, 64, 64);
 		setSpriteXY(1, 5, 256 - 64, 0);
 		setSpriteFrame(1, 5, 0);
+	}
+	// Fade in from black.
+	for(i = -16;i < 0;i += 2)
+	{
+		setBrightness(3, i);
+		swiWaitForVBlank();
 	}
 }
 
@@ -396,6 +409,12 @@ void initializeMainGameGraphics(playerMode mode)
 void gameOverScreen(playerMode mode)
 {
 	int i = 0;
+	// Fade out to black.
+	for(i = 0;i > -16;i -= 2)
+	{
+		setBrightness(3, i);
+		swiWaitForVBlank();
+	}
 	// Set the number of the sprites.
 	int totalSprites = 5;
 	if(mode == MULTI_NORMAL || mode == MULTI_P1 || mode == MULTI_P2)
@@ -463,6 +482,12 @@ void gameOverScreen(playerMode mode)
 			gameover_bottomMap, gameover_bottomMapLen, gameover_bottomPal);
 		loadBg(1, 1, gameover_top_p1Tiles, gameover_top_p1TilesLen,
 			gameover_top_p1Map, gameover_top_p1MapLen, gameover_top_p1Pal);
+	}
+	// Fade in from black.
+	for(i = -16;i < 0;i += 2)
+	{
+		setBrightness(3, i);
+		swiWaitForVBlank();
 	}
 }
 

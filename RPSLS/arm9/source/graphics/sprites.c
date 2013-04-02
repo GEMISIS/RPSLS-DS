@@ -87,6 +87,11 @@ typedef struct _sprite_t_
 	 * Tells whether the sprite is active or not.
 	 */
 	bool active;
+	/*
+	 * Tells whether the sprite is a copy of another sprite
+	 * or not.
+	 */
+	bool isCopy;
 
 	/*
 	 * The graphics memory for where the
@@ -423,6 +428,11 @@ void createSprite(int screen, int index, int palSlot, const unsigned int* gfxDat
 	spriteList[screen][index].active = true;
 
 	/*
+	 * Make sure to tell that this sprite is not a copy.
+	 */
+	spriteList[screen][index].isCopy = false;
+
+	/*
 	 * Load the sprite's palette and graphical memory.
 	 */
 	loadData(screen, index, true, true);
@@ -519,6 +529,9 @@ void copySprite(int screen, int index, int palSlot, int screen2, int index2)
 		screen2 = 1;
 	}
 
+	/*
+	 * Check if the sprite is already active, if so, return from this method.
+	 */
 	if(spriteList[screen][index].active)
 	{
 		return;
@@ -571,11 +584,6 @@ void copySprite(int screen, int index, int palSlot, int screen2, int index2)
 	 * No need to copy the memory since they are duplicates and can
 	 * share the pointer to the memory.
 	 */
-	if(spriteList[screen][index].gfxData != NULL)
-	{
-		free(spriteList[screen][index].gfxData);
-		spriteList[screen][index].gfxData = NULL;
-	}
 	spriteList[screen][index].gfxData = spriteList[screen2][index2].gfxData;
 
 	/*
@@ -583,17 +591,17 @@ void copySprite(int screen, int index, int palSlot, int screen2, int index2)
 	 * No need to copy the memory since they are duplicates and can
 	 * share the pointer to the memory.
 	 */
-	if(spriteList[screen][index].paletteData != NULL)
-	{
-		free(spriteList[screen][index].paletteData);
-		spriteList[screen][index].paletteData = NULL;
-	}
 	spriteList[screen][index].paletteData = spriteList[screen2][index2].paletteData;
 
 	/*
 	 * Sets the sprite to active.
 	 */
 	spriteList[screen][index].active = true;
+
+	/*
+	 * Make sure to tell that this sprite is a copy.
+	 */
+	spriteList[screen][index].isCopy = true;
 
 	/*
 	 * Load the sprite's palette and graphical memory.
@@ -614,12 +622,25 @@ void copySprite(int screen, int index, int palSlot, int screen2, int index2)
 void deleteSpritePalette(int screen, int index)
 {
 	/*
-	 * Frees the sprite's palette data.
+	 * Check if the sprite is a copy of another sprite.
 	 */
-	if(spriteList[screen][index].paletteData)
+	if(spriteList[screen][index].isCopy)
 	{
-		free(spriteList[screen][index].paletteData);
+		/*
+		 * If so, just set the pointer to NULL.
+		 */
 		spriteList[screen][index].paletteData = NULL;
+	}
+	else
+	{
+		/*
+		 * Otherwise, frees the sprite's palette data.
+		 */
+		if(spriteList[screen][index].paletteData)
+		{
+			free(spriteList[screen][index].paletteData);
+			spriteList[screen][index].paletteData = NULL;
+		}
 	}
 }
 
@@ -684,21 +705,35 @@ void deleteSprite(int screen, int index)
 	oamClearSprite((screen == 0) ? &oamSub : &oamMain, index);
 
 	/*
-	 * Frees the sprite's graphical data.
+	 * Check if the sprite is a copy of another sprite.
 	 */
-	if(spriteList[screen][index].gfxData)
+	if(spriteList[screen][index].isCopy)
 	{
-		free(spriteList[screen][index].gfxData);
+		/*
+		 * If so, just set the pointers to NULL.
+		 */
 		spriteList[screen][index].gfxData = NULL;
-	}
-
-	/*
-	 * Frees the sprite's graphical data in the memory.
-	 */
-	if(spriteList[screen][index].gfxMemory)
-	{
-		oamFreeGfx((screen <= 0) ? &oamSub : &oamMain, spriteList[screen][index].gfxMemory);
 		spriteList[screen][index].gfxMemory = NULL;
+	}
+	else
+	{
+		/*
+		 * Otherwise, frees the sprite's graphical data.
+		 */
+		if(spriteList[screen][index].gfxData)
+		{
+			free(spriteList[screen][index].gfxData);
+			spriteList[screen][index].gfxData = NULL;
+		}
+
+		/*
+		 * Also frees the sprite's graphical data in the memory.
+		 */
+		if(spriteList[screen][index].gfxMemory)
+		{
+			oamFreeGfx((screen <= 0) ? &oamSub : &oamMain, spriteList[screen][index].gfxMemory);
+			spriteList[screen][index].gfxMemory = NULL;
+		}
 	}
 }
 
