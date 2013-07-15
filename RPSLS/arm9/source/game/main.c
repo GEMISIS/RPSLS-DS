@@ -13,6 +13,9 @@
 #include "gameover_top_p2.h"
 #include "gameover_bottom.h"
 
+#include "neocompoLogo.h"
+#include "devLogo.h"
+
 // Include the top screen logo.
 #include "logo.h"
 
@@ -908,10 +911,81 @@ void multiPlayerLoop()
 	}
 }
 
+/*
+ * Displays the logos for NeoCompo 2013.
+ */
+void displayCompoLogo()
+{
+	// Set the video mode for the top and bottom screens to support extended background layers.
+    videoSetMode(MODE_5_2D);
+    videoSetModeSub(MODE_5_2D);
+	
+	// Setup the VRAM banks for the main and sub graphics engines.
+    vramSetBankA(VRAM_A_MAIN_BG);
+    vramSetBankC(VRAM_C_SUB_BG);
+
+	// Initialize the main background.
+	int backgroundMain = bgInit(3, BgType_Bmp8, BgSize_B8_256x256, 0,0);
+	// Initialize the sub background.
+	int backgroundSub = bgInitSub(3, BgType_Bmp8, BgSize_B8_256x256, 0,0);
+
+	// Copy the main background's data.
+	dmaCopy(neocompoLogoBitmap, bgGetGfxPtr(backgroundMain), 65536);
+	// Copy the sub background's data.
+	dmaCopy(devLogoBitmap, bgGetGfxPtr(backgroundSub), 65536);
+	// Copy the main background's palette.
+	dmaCopy(neocompoLogoPal, BG_PALETTE, 512);
+	// Copy the sub background's palette.
+	dmaCopy(devLogoPal, BG_PALETTE_SUB, 512);
+
+	// Fade the brightness back in.
+	for(int i = -16;i < 1;i += 1)
+	{
+		setBrightness(3, i);
+		swiWaitForVBlank();
+	}
+
+	// Wait for 5 seconds on the logo.
+	for(int i = 0;i < 60 * 5;i += 1)
+	{
+		swiWaitForVBlank();
+		// Allow the user to skip the logos after at least 2 seconds.
+		if(i > 60 * 1)
+		{
+			scanKeys();
+			if(keysDown() & KEY_A)
+			{
+				break;
+			}
+		}
+	}
+
+	// Fade back out.
+	for(int i = 0;i > -17;i -= 1)
+	{
+		setBrightness(3, i);
+		swiWaitForVBlank();
+	}
+
+	// Zero out the data from the top and bottom screen backgrounds.
+	memset(bgGetGfxPtr(backgroundMain), 0, 65536);
+	memset(bgGetGfxPtr(backgroundSub), 0, 65536);
+	// Zero out the palette slots as well.
+	memset(BG_PALETTE, 0, 512);
+	memset(BG_PALETTE_SUB, 0, 512);
+
+	// Set the video mode for the top and bottom screens back to normal.
+    videoSetMode(MODE_0_2D);
+    videoSetModeSub(MODE_0_2D);
+}
+
 int main()
 {
 	// Initialize exception handling for debugging purposes.
 	defaultExceptionHandler();
+
+	// Displays the logo for the Neocompo 2013.
+	displayCompoLogo();
 
 	// Initialize video (IE: Video Ram).
 	initVideo();
